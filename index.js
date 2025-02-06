@@ -28,6 +28,15 @@ async function run() {
       const result = await jobsCollection.insertOne(job);
       res.send(result);
     })
+    app.get('/jobs',async(req, res) => {
+      const jobs = await jobsCollection.find().toArray();
+      res.send(jobs);
+    })
+    app.get('/jobs/:email',async(req, res) => {
+        const email = req.params.email;
+        const result = await jobsCollection.find({"buyer.email" : email }).toArray();
+        res.send(result);
+    })
     // Send a ping to confirm a successful connection
     await client.db('admin').command({ ping: 1 })
     console.log(
